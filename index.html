@@ -1,120 +1,843 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gracian 101</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito:wght@600;800&display=swap">
-<style>
-:root{--bg:#fbfaf5;--fg:#262626;--mut:#7a7a72;--card:#fff;--line:#e3e1d6;--g:#58cc02;--gd:#46a302;--r:#ff4b4b;--rbg:#ffe3e3;--gbg:#dff7c8;--acc:#ce82ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131f24;--fg:#f1f1ec;--mut:#9aa7ac;--card:#1d2c33;--line:#34464e;--rbg:#4a2326;--gbg:#25421a}}
-:root[data-theme="dark"]{--bg:#131f24;--fg:#f1f1ec;--mut:#9aa7ac;--card:#1d2c33;--line:#34464e;--rbg:#4a2326;--gbg:#25421a}
-*{box-sizing:border-box}html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--fg);font:17px/1.4 "Nunito","Trebuchet MS",system-ui,sans-serif;background-color:var(--bg)}
-#app{max-width:480px;margin:0 auto;height:100%;display:flex;flex-direction:column;padding:16px}
-.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.bar{flex:1;height:14px;background:var(--line);border-radius:9px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--g);width:0;transition:width .4s;border-radius:9px}
-.streak{font-weight:800;color:#ff9600}
-main{flex:1;overflow-y:auto}
-h1{font-size:30px;margin:8px 0}h2{font-size:22px;margin:0 0 14px}
-.mut{color:var(--mut)}.hero{text-align:center;padding-top:8vh}.hero .big{font-size:64px}
-.row{display:flex;gap:12px;align-items:baseline;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
-.row b{color:var(--acc);font-size:20px;min-width:84px}.row span{font-size:15px}
-.opt,.chip{display:block;width:100%;text-align:left;background:var(--card);color:var(--fg);border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;padding:14px;margin-bottom:10px;font:inherit;font-weight:700;cursor:pointer}
-.opt.sel{border-color:#1cb0f6;background:rgba(28,176,246,.15)}.opt.used{opacity:.25;pointer-events:none}
-.prompt{font-size:26px;font-weight:800;color:var(--acc);margin:6px 0 16px}
-.line{min-height:62px;border-bottom:2px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 10px;margin-bottom:18px}
-.bank{display:flex;flex-wrap:wrap;gap:8px}
-.chip{width:auto;display:inline-block;padding:10px 14px;margin:0;text-align:center}
-.chip.used{opacity:.25;pointer-events:none}
-.btn{width:100%;border:0;border-bottom:4px solid var(--gd);background:var(--g);color:#fff;font:inherit;font-weight:800;letter-spacing:.5px;text-transform:uppercase;border-radius:14px;padding:14px;cursor:pointer;margin-top:8px}
-.btn:disabled{background:var(--line);border-color:var(--line);color:var(--mut);cursor:default}
-.btn.alt{background:var(--card);color:var(--g);border:2px solid var(--line);border-bottom-width:4px}
-.fb{margin:10px -16px -16px;padding:16px;border-radius:20px 20px 0 0}
-.fb.ok{background:var(--gbg);color:var(--gd)}.fb.no{background:var(--rbg);color:var(--r)}
-.fb b{font-size:20px}.fb.no .btn{background:var(--r);border-color:#d33}
-.cert{border:3px dashed var(--acc);border-radius:18px;padding:20px;text-align:center;margin-top:18px;background:var(--card)}
-canvas{position:fixed;inset:0;pointer-events:none}
-body{transition:background-color .8s,color .8s;background-image:radial-gradient(circle at 20% 0%,rgba(206,130,255,.14),transparent 50%),radial-gradient(circle at 100% 100%,rgba(88,204,2,.09),transparent 45%);background-attachment:fixed}
-h1,h2,.prompt,.big,.row b{font-family:"DM Serif Display",Georgia,serif;font-weight:400}
-h1{font-size:34px;line-height:1.15}h2{font-size:26px}.row b{font-size:22px}
-.row,.opt,.chip{box-shadow:0 6px 16px rgba(0,0,0,.06);transition:transform .1s}
-.opt:active,.chip:active,.btn:active{transform:translateY(2px)}
-.btn{box-shadow:0 8px 18px rgba(88,204,2,.25)}
-.bar i{background:linear-gradient(90deg,var(--g),#8be02c)}
-.cert{box-shadow:0 10px 30px rgba(0,0,0,.1)}
-body.love{--bg:#fde9ee;--fg:#4a2c25;--card:#fff8f5;--line:#efc7d2;--g:#e8789c;--gd:#c4577c;--acc:#8b5a3c;--gbg:#fbd7e2;--mut:#9a6f62;background-image:radial-gradient(circle at 20% 0%,rgba(139,90,60,.16),transparent 50%),radial-gradient(circle at 100% 100%,rgba(232,120,156,.25),transparent 50%)}
-body.love .btn{box-shadow:0 8px 18px rgba(232,120,156,.3)}
-body.love .bar i{background:linear-gradient(90deg,#e8789c,#c98b6b)}
-body.love .cert{border-color:#8b5a3c}
-</style></head><body>
-<div id="app"></div><canvas id="cf"></canvas>
-<script>
-const W=(g,m)=>[g,m];
-const M=(g,e,a,b)=>({t:'mc',q:`What does “${g}” mean?`,o:[e,a,b],a:0});
-const S=[
-{t:'welcome'},
-{t:'teach',title:'Lesson 1 · Greetings',w:[W('Salu','Hello'),W('Gra','You. Yes, you, Ace.'),W('Talvia','Perhaps. A word with an unreasonable number of possibilities'),W('Veshia','The beginning of something unexpected'),W('Sel','Yes. Said a little faster than it should be'),W('Nok','No. Rarely used in this course')]},
-M('Salu','Hello','Goodbye','Perhaps'),M('Sel','Yes','No','Perhaps'),M('Veshia','The beginning of something unexpected','A save point','Dinner'),
-{t:'pairs',p:[['Salu','hello'],['Gra','you'],['Talvia','perhaps'],['Sel','yes'],['Nok','no']]},
-{t:'teach',title:'Lesson 2 · Small words',w:[W('Ora','Will. Something that is going to happen'),W('Ke','I'),W('Dor','And. Joins things that belong together'),W('Nel','With. Next to, not instead of'),W('Sumora','Day one. A day worth counting')]},
-M('Ke','I','And','With'),M('Dor','And','With','I'),M('Nel','With','I','And'),M('Sumora','Day one','Perhaps','Dinner'),
-{t:'pairs',p:[['Ora','will'],['Ke','I'],['Dor','and'],['Nel','with'],['Sumora','day one']]},
-{t:'teach',title:'Lesson 3 · Moments',w:[W('Lumbra','Shiver. What a song does when it hits at exactly the right moment'),W('Cenara','Dinner. Beautifully plated, candlelit, and nobody gets eaten. Promise'),W('Ashka','A song you replay until it becomes a place'),W('Tolia','A comfortable silence'),W('Ven','Friend. The one who stays in the lobby after the match ends'),W('El','Be. To exist right next to someone')]},
-M('Lumbra','Shiver','Dinner','Day one'),M('Cenara','Dinner','A shiver','A friend'),M('Tolia','A comfortable silence','A boss fight','A song on repeat'),M('Ven','Friend','Dinner','A shiver'),
-{t:'pairs',p:[['Lumbra','shiver'],['Cenara','dinner'],['Ashka','song on repeat'],['Ven','friend'],['El','be']]},
-{t:'build',p:'Write in Gracian: “Dinner and a song on repeat.”',bank:['cenara','dor','ashka','nel','tolia','ora'],a:['cenara','dor','ashka'],end:'.'},
-{t:'teach',title:'Lesson 4 · People',w:[W('Kel','Boy. What Kratos calls Atreus'),W('Lia','Girl'),W('Sova','Person. Someone who laughs at your joke before you finish it'),W('Miel','My. Belonging to someone you’d share coffees with')]},
-M('Kel','Boy','Girl','Friend'),M('Lia','Girl','Boy','Person'),M('Sova','Person','Friend','Shiver'),
-{t:'pairs',p:[['Kel','boy'],['Lia','girl'],['Sova','person'],['Ven','friend'],['Miel','my']]},
-{t:'build',p:'Translate: “Kel dor lia.”',bank:['boy','and','girl','friend','with','person'],a:['boy','and','girl'],end:'.'},
-{t:'build',title:'Lesson 5 · Sentences',p:'Write in Gracian: “Dinner with a friend, perhaps.”',bank:['cenara','nel','ven','talvia','dor','kel'],a:['cenara','nel','ven','talvia'],end:'.'},
-{t:'build',p:'Write in Gracian: “A song and a silence.”',bank:['ashka','dor','tolia','nel','lumbra','sova'],a:['ashka','dor','tolia'],end:'.'},
-{t:'build',p:'Write in Gracian: “Perhaps you are my shiver.”',bank:['talvia','gra','el','miel','lumbra','ora','lia'],a:['talvia','gra','el','miel','lumbra'],end:'.'},
-{t:'build',title:'Final Exam',p:'Translate: “Ora gra el miel lia-ven?”',bank:['will','you','be','my','girlfriend','boyfriend','girl','friend','boy','dinner'],a:['will','you','be','my','girlfriend'],end:'?',final:true},
-{t:'reveal'}
-];
-const total=S.filter(s=>s.t=='mc'||s.t=='build'||s.t=='teach'||s.t=='pairs').length;
-let i=0,streak=0,done=0;const $=document.getElementById('app');
-const sh=a=>[...a].sort(()=>Math.random()-.5);
-let ac;function tn(f,s,d,ty,v){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();if(ac.state=='suspended')ac.resume();const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+s;o.type=ty||'sine';o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v||.2,t+.01);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+d+.05);}catch(e){}}
-const sfx={ok:()=>{tn(659,0,.18,'triangle');tn(880,.1,.3,'triangle');},no:()=>{tn(196,0,.2,'sawtooth',.12);tn(147,.14,.3,'sawtooth',.12);},tap:()=>tn(520,0,.06,'sine',.1),win:()=>[523,659,784,1047].forEach((f,k)=>tn(f,k*.12,.45,'triangle'))};
-function frame(inner,foot){const p=Math.round(done/total*100);
- $.innerHTML=`<div class="top"><div class="bar"><i style="width:${p}%"></i></div><div class="streak">🔥 ${streak}</div></div><main>${inner}</main>${foot||''}`;}
-function next(){i++;render();}
-function render(){const s=S[i];({welcome,teach,mc,pairs,build,reveal})[s.t](s);}
-function welcome(){$.innerHTML=`<main class="hero"><div class="big" style="font-weight:800;color:var(--acc)">101</div><h1>Welcome to Gracian 101</h1><p class="mut">Enrollment is limited to one student. Sound on, please.</p></main><button class="btn" id="go">Begin</button>`;
- go.onclick=()=>{sfx.tap();next();};}
-function teach(s){frame(`<h2>${s.title}</h2>`+s.w.map(x=>`<div class="row"><b>${x[0]}</b><span>${x[1]}</span></div>`).join(''),`<button class="btn" id="c">Continue</button>`);
- c.onclick=()=>{sfx.tap();done++;next();};}
-function feedback(ok,msg,again,cont){ok?sfx.ok():sfx.no();const f=document.createElement('div');f.className='fb '+(ok?'ok':'no');
- f.innerHTML=`<b>${ok?'Correct!':'Not quite'}</b><div>${msg}</div><button class="btn">${ok?'Continue':'Try again'}</button>`;
- $.querySelector('.btn').style.display='none';$.appendChild(f);f.querySelector('.btn').onclick=ok?cont:again;}
-function mc(s){let sel=-1;const o=s.o.map((t,k)=>[t,k]);const opts=sh(o);
- frame(`<h2>${s.q}</h2>`+opts.map(x=>`<button class="opt" data-k="${x[1]}">${x[0]}</button>`).join(''),`<button class="btn" id="chk" disabled>Check</button>`);
- $.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{sfx.tap();sel=+b.dataset.k;$.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');chk.disabled=false;});
- chk.onclick=()=>{const ok=sel==s.a;if(ok){streak++;done++;}else streak=0;
-  feedback(ok,ok?'Fluent already.':'Check the lesson and try again.',()=>mc(s),next);};}
-function pairs(s){const d={};s.p.forEach(x=>{d[x[0]]=x[1]});const L=sh(s.p.map(x=>x[0])),R=sh(s.p.map(x=>x[1]));let a=null;const m=[];
- const draw=()=>{const b=(w,k)=>`<button class="opt ${m.includes(w)?'used':''} ${a==w?'sel':''}" data-${k}="${w}">${w}</button>`;
-  frame(`<h2>Tap the matching pairs</h2><div style="display:flex;gap:10px"><div style="flex:1">${L.map(w=>b(w,'l')).join('')}</div><div style="flex:1">${R.map(w=>b(w,'r')).join('')}</div></div>`,`<button class="btn" disabled>Check</button>`);
-  $.querySelectorAll('[data-l]').forEach(e=>e.onclick=()=>{sfx.tap();a=e.dataset.l;draw();});
-  $.querySelectorAll('[data-r]').forEach(e=>e.onclick=()=>{if(!a)return;if(d[a]==e.dataset.r){m.push(a,e.dataset.r);a=null;sfx.tap();if(m.length==L.length*2){streak++;done++;draw();feedback(true,'All matched.',null,next);return;}}else{sfx.no();streak=0;a=null;}draw();});};
- draw();}
-function build(s){const pick=[];const bank=sh(s.bank);
- const draw=()=>{frame(`${s.title?`<h2>${s.title}</h2>`:''}<div class="prompt">${s.p}</div><div class="line" id="ln">${pick.map((w,k)=>`<button class="chip" data-k="${k}">${(k?w:w[0].toUpperCase()+w.slice(1))+(k==pick.length-1?(s.end||''):'')}</button>`).join('')}</div><div class="bank">${bank.map(w=>`<button class="chip ${pick.includes(w)?'used':''}" data-w="${w}">${w}</button>`).join('')}</div>`,`<button class="btn" id="chk" ${pick.length?'':'disabled'}>Check</button>`);
-  $.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{sfx.tap();pick.push(b.dataset.w);draw();});
-  $.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{pick.splice(+b.dataset.k,1);draw();});
-  chk.onclick=()=>{const ok=pick.join(' ')==s.a.join(' ');if(ok&&s.final)document.body.classList.add('love');if(ok){streak++;done++;}else streak=0;
-   feedback(ok,ok?('Nicely built.'):'Rearrange the words and try again.',()=>{pick.length=0;draw();},next);};};
- draw();}
-function reveal(){document.body.classList.add('love');done=total;frame(`<div class="hero" style="padding-top:2vh"><h1 style="margin-top:14vh">Well?</h1></div>`,`<button class="btn" id="y1">Sel</button><button class="btn alt" id="y2">Nok</button>`);
- const yes=()=>{confetti();frame(`<div class="hero" style="padding-top:12vh"><h1>Say hi to your new boyfriend! : D</h1></div>`,`<button class="btn" id="nx">Continue</button>`);nx.onclick=()=>{sfx.tap();frame('');$.querySelector('main').innerHTML+=`<div class="cert"><div class="mut">Certificate of Completion</div><h2 style="margin:8px 0">Marje Grace</h2><div>has passed Gracian 101 with a perfect score and a 🔥 ${streak} streak.</div><p class="mut">Unlike a certain movie, this one is a love story.</p></div>`;$.querySelectorAll('.btn').forEach(b=>b.style.display='none');};};
- y1.onclick=yes;y2.onclick=()=>{document.querySelectorAll('#y1,#y2').forEach(b=>b.style.display='none');feedback(false,'Check your vocabulary.',reveal,null);};}
-function confetti(){sfx.win();const c=document.getElementById('cf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
- const cols=['#f4a6bd','#e8789c','#8b5a3c','#c98b6b','#fbd7e2'];
- const P=Array.from({length:150},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,v:2+Math.random()*4,s:5+Math.random()*6,c:cols[Math.random()*5|0],d:Math.random()*6}));
- let f=0;(function a(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.y+=p.v;p.x+=Math.sin((p.y+p.d*50)/30)*2;x.fillStyle=p.c;x.fillRect(p.x,p.y,p.s,p.s*.6);});
- if(++f<260)requestAnimationFrame(a);else x.clearRect(0,0,c.width,c.height);})();}
-render();
-</script></body></html>
+	<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Gracian 101</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌙</text></svg>"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Nunito:wght@600;800&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #fbfaf5;
+        --fg: #262626;
+        --mut: #7a7a72;
+        --card: #fff;
+        --line: #e3e1d6;
+        --g: #58cc02;
+        --gd: #46a302;
+        --r: #ff4b4b;
+        --rbg: #ffe3e3;
+        --gbg: #dff7c8;
+        --acc: #ce82ff;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #131f24;
+          --fg: #f1f1ec;
+          --mut: #9aa7ac;
+          --card: #1d2c33;
+          --line: #34464e;
+          --rbg: #4a2326;
+          --gbg: #25421a;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #131f24;
+        --fg: #f1f1ec;
+        --mut: #9aa7ac;
+        --card: #1d2c33;
+        --line: #34464e;
+        --rbg: #4a2326;
+        --gbg: #25421a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          17px/1.4 "Nunito",
+          "Trebuchet MS",
+          system-ui,
+          sans-serif;
+        background-color: var(--bg);
+      }
+      #app {
+        max-width: 480px;
+        margin: 0 auto;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .bar {
+        flex: 1;
+        height: 14px;
+        background: var(--line);
+        border-radius: 9px;
+        overflow: hidden;
+      }
+      .bar i {
+        display: block;
+        height: 100%;
+        background: var(--g);
+        width: 0;
+        transition: width 0.4s;
+        border-radius: 9px;
+      }
+      .streak {
+        font-weight: 800;
+        color: #ff9600;
+      }
+      main {
+        flex: 1;
+        overflow-y: auto;
+      }
+      h1 {
+        font-size: 30px;
+        margin: 8px 0;
+      }
+      h2 {
+        font-size: 22px;
+        margin: 0 0 14px;
+      }
+      .mut {
+        color: var(--mut);
+      }
+      .hero {
+        text-align: center;
+        padding-top: 8vh;
+      }
+      .hero .big {
+        font-size: 64px;
+      }
+      .row {
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+        background: var(--card);
+        border: 2px solid var(--line);
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+      }
+      .row b {
+        color: var(--acc);
+        font-size: 20px;
+        min-width: 84px;
+      }
+      .row span {
+        font-size: 15px;
+      }
+      .opt,
+      .chip {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: var(--card);
+        color: var(--fg);
+        border: 2px solid var(--line);
+        border-bottom-width: 4px;
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 10px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .opt.sel {
+        border-color: #1cb0f6;
+        background: rgba(28, 176, 246, 0.15);
+      }
+      .opt.used {
+        opacity: 0.25;
+        pointer-events: none;
+      }
+      .prompt {
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--acc);
+        margin: 6px 0 16px;
+      }
+      .line {
+        min-height: 62px;
+        border-bottom: 2px solid var(--line);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 6px 0 10px;
+        margin-bottom: 18px;
+      }
+      .bank {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        width: auto;
+        display: inline-block;
+        padding: 10px 14px;
+        margin: 0;
+        text-align: center;
+      }
+      .chip.used {
+        opacity: 0.25;
+        pointer-events: none;
+      }
+      .btn {
+        width: 100%;
+        border: 0;
+        border-bottom: 4px solid var(--gd);
+        background: var(--g);
+        color: #fff;
+        font: inherit;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        border-radius: 14px;
+        padding: 14px;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+      .btn:disabled {
+        background: var(--line);
+        border-color: var(--line);
+        color: var(--mut);
+        cursor: default;
+      }
+      .btn.alt {
+        background: var(--card);
+        color: var(--g);
+        border: 2px solid var(--line);
+        border-bottom-width: 4px;
+      }
+      .fb {
+        margin: 10px -16px -16px;
+        padding: 16px;
+        border-radius: 20px 20px 0 0;
+      }
+      .fb.ok {
+        background: var(--gbg);
+        color: var(--gd);
+      }
+      .fb.no {
+        background: var(--rbg);
+        color: var(--r);
+      }
+      .fb b {
+        font-size: 20px;
+      }
+      .fb.no .btn {
+        background: var(--r);
+        border-color: #d33;
+      }
+      .cert {
+        border: 3px dashed var(--acc);
+        border-radius: 18px;
+        padding: 20px;
+        text-align: center;
+        margin-top: 18px;
+        background: var(--card);
+      }
+      canvas {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+      }
+      body {
+        transition:
+          background-color 0.8s,
+          color 0.8s;
+        background-image:
+          radial-gradient(circle at 20% 0%, rgba(206, 130, 255, 0.14), transparent 50%),
+          radial-gradient(circle at 100% 100%, rgba(88, 204, 2, 0.09), transparent 45%);
+        background-attachment: fixed;
+      }
+      h1,
+      h2,
+      .prompt,
+      .big,
+      .row b {
+        font-family: "DM Serif Display", Georgia, serif;
+        font-weight: 400;
+      }
+      h1 {
+        font-size: 34px;
+        line-height: 1.15;
+      }
+      h2 {
+        font-size: 26px;
+      }
+      .row b {
+        font-size: 22px;
+      }
+      .row,
+      .opt,
+      .chip {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        transition: transform 0.1s;
+      }
+      .opt:active,
+      .chip:active,
+      .btn:active {
+        transform: translateY(2px);
+      }
+      .btn {
+        box-shadow: 0 8px 18px rgba(88, 204, 2, 0.25);
+      }
+      .bar i {
+        background: linear-gradient(90deg, var(--g), #8be02c);
+      }
+      .cert {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      body.love {
+        --bg: #fde9ee;
+        --fg: #4a2c25;
+        --card: #fff8f5;
+        --line: #efc7d2;
+        --g: #e8789c;
+        --gd: #c4577c;
+        --acc: #8b5a3c;
+        --gbg: #fbd7e2;
+        --mut: #9a6f62;
+        background-image:
+          radial-gradient(circle at 20% 0%, rgba(139, 90, 60, 0.16), transparent 50%),
+          radial-gradient(circle at 100% 100%, rgba(232, 120, 156, 0.25), transparent 50%);
+      }
+      body.love .btn {
+        box-shadow: 0 8px 18px rgba(232, 120, 156, 0.3);
+      }
+      body.love .bar i {
+        background: linear-gradient(90deg, #e8789c, #c98b6b);
+      }
+      body.love .cert {
+        border-color: #8b5a3c;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <canvas id="cf"></canvas>
+    <script>
+      const W = (g, m) => [g, m];
+      const M = (g, e, a, b) => ({ t: "mc", q: `What does “${g}” mean?`, o: [e, a, b], a: 0 });
+      const S = [
+        { t: "welcome" },
+        {
+          t: "teach",
+          title: "Lesson 1 · Greetings",
+          w: [
+            W("Salu", "Hello"),
+            W("Gra", "You. Yes, you, Ace."),
+            W("Talvia", "Perhaps. A word with an unreasonable number of possibilities"),
+            W("Veshia", "The beginning of something unexpected"),
+            W("Sel", "Yes. Said a little faster than it should be"),
+            W("Nok", "No. Rarely used in this course"),
+            W("Sen", "Are. Links someone to what they are"),
+          ],
+        },
+        M("Salu", "Hello", "Goodbye", "Perhaps"),
+        M("Sel", "Yes", "No", "Perhaps"),
+        M("Sen", "Are", "Yes", "Hello"),
+        M("Veshia", "The beginning of something unexpected", "A save point", "Dinner"),
+        { t: "listen", w: "salu", o: ["salu", "sel", "nok"] },
+        { t: "type", q: "Type the English for “Talvia”", a: ["perhaps"] },
+        {
+          t: "pairs",
+          p: [
+            ["Salu", "hello"],
+            ["Gra", "you"],
+            ["Talvia", "perhaps"],
+            ["Sel", "yes"],
+            ["Nok", "no"],
+          ],
+        },
+        {
+          t: "teach",
+          title: "Lesson 2 · Small words",
+          w: [
+            W("Ora", "Will. Something that is going to happen"),
+            W("Ke", "I"),
+            W("Dor", "And. Joins things that belong together"),
+            W("Nel", "With. Next to, not instead of"),
+            W("Sumora", "Day one. A day worth counting"),
+          ],
+        },
+        M("Ke", "I", "And", "With"),
+        M("Dor", "And", "With", "I"),
+        M("Nel", "With", "I", "And"),
+        M("Sumora", "Day one", "Perhaps", "Dinner"),
+        { t: "listen", w: "dor", o: ["dor", "nel", "ke"] },
+        { t: "type", q: "Type the English for “Nel”", a: ["with"] },
+        {
+          t: "pairs",
+          p: [
+            ["Ora", "will"],
+            ["Ke", "I"],
+            ["Dor", "and"],
+            ["Nel", "with"],
+            ["Sumora", "day one"],
+          ],
+        },
+        {
+          t: "teach",
+          title: "Lesson 3 · Moments",
+          w: [
+            W("Lumbra", "Shiver. What a song does when it hits at exactly the right moment"),
+            W("Cenara", "Dinner. Beautifully plated, candlelit, and nobody gets eaten. Promise"),
+            W("Ashka", "A song you replay until it becomes a place"),
+            W("Tolia", "A comfortable silence"),
+            W("Ven", "Friend. The one who stays in the lobby after the match ends"),
+            W("El", "Be. To exist right next to someone"),
+          ],
+        },
+        M("Lumbra", "Shiver", "Dinner", "Day one"),
+        M("Cenara", "Dinner", "A shiver", "A friend"),
+        M("Tolia", "A comfortable silence", "A boss fight", "A song on repeat"),
+        M("Ven", "Friend", "Dinner", "A shiver"),
+        { t: "listen", w: "lumbra", o: ["lumbra", "ashka", "tolia"] },
+        { t: "type", q: "Type the English for “Cenara”", a: ["dinner"] },
+        {
+          t: "mc",
+          q: "Fill the gap: “Cenara ___ ashka” (dinner and a song)",
+          o: ["dor", "nel", "tolia"],
+          a: 0,
+        },
+        {
+          t: "pairs",
+          p: [
+            ["Lumbra", "shiver"],
+            ["Cenara", "dinner"],
+            ["Ashka", "song on repeat"],
+            ["Ven", "friend"],
+            ["El", "be"],
+          ],
+        },
+        {
+          t: "build",
+          p: "Write in Gracian: “Dinner and a song on repeat.”",
+          bank: ["cenara", "dor", "ashka", "nel", "tolia", "ora"],
+          a: ["cenara", "dor", "ashka"],
+          end: ".",
+        },
+        {
+          t: "teach",
+          title: "Lesson 4 · People",
+          w: [
+            W("Kel", "Boy. What Kratos calls Atreus"),
+            W("Lia", "Girl"),
+            W("Sova", "Person. Someone who laughs at your joke before you finish it"),
+            W("Miel", "My. Belonging to someone you’d share coffees with"),
+            W("Alune", "Beautiful. Someone like Ace"),
+          ],
+        },
+        M("Kel", "Boy", "Girl", "Friend"),
+        M("Lia", "Girl", "Boy", "Person"),
+        M("Sova", "Person", "Friend", "Shiver"),
+        M("Alune", "Beautiful", "Person", "Dinner"),
+        { t: "listen", w: "kel", o: ["kel", "lia", "sova"] },
+        {
+          t: "mc",
+          q: "Fill the gap: “Kel ___ lia” (boy and girl)",
+          o: ["dor", "ven", "nel"],
+          a: 0,
+        },
+        { t: "type", q: "Type the English for “Alune”", a: ["beautiful"] },
+        {
+          t: "pairs",
+          p: [
+            ["Kel", "boy"],
+            ["Lia", "girl"],
+            ["Sova", "person"],
+            ["Ven", "friend"],
+            ["Miel", "my"],
+          ],
+        },
+        {
+          t: "build",
+          p: "Translate: “Kel dor lia.”",
+          bank: ["boy", "and", "girl", "friend", "with", "person"],
+          a: ["boy", "and", "girl"],
+          end: ".",
+        },
+        {
+          t: "build",
+          title: "Lesson 5 · Sentences",
+          p: "Write in Gracian: “Dinner with a friend, perhaps.”",
+          bank: ["cenara", "nel", "ven", "talvia", "dor", "kel"],
+          a: ["cenara", "nel", "ven", "talvia"],
+          end: ".",
+        },
+        {
+          t: "build",
+          p: "Write in Gracian: “A song and a silence.”",
+          bank: ["ashka", "dor", "tolia", "nel", "lumbra", "sova"],
+          a: ["ashka", "dor", "tolia"],
+          end: ".",
+        },
+        {
+          t: "build",
+          p: "Write in Gracian: “You are beautiful.”",
+          bank: ["gra", "sen", "alune", "el", "miel", "talvia", "lumbra"],
+          a: ["gra", "sen", "alune"],
+          end: ".",
+        },
+        {
+          t: "build",
+          title: "Final Exam",
+          p: "Translate: “Ora gra el miel lia-ven?”",
+          bank: ["will", "you", "be", "my", "girlfriend", "girl", "boy", "dinner"],
+          a: ["will", "you", "be", "my", "girlfriend"],
+          end: "?",
+          final: true,
+        },
+        { t: "reveal" },
+      ];
+      const total = S.filter((s) => !["welcome", "reveal"].includes(s.t)).length;
+      let i = 0,
+        streak = 0,
+        done = 0;
+      const $ = document.getElementById("app");
+      const sh = (a) => [...a].sort(() => Math.random() - 0.5);
+      let ac;
+      function tn(f, s, d, ty, v) {
+        try {
+          ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+          if (ac.state == "suspended") ac.resume();
+          const o = ac.createOscillator(),
+            g = ac.createGain(),
+            t = ac.currentTime + s;
+          o.type = ty || "sine";
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0, t);
+          g.gain.linearRampToValueAtTime(v || 0.2, t + 0.01);
+          g.gain.exponentialRampToValueAtTime(0.001, t + d);
+          o.connect(g);
+          g.connect(ac.destination);
+          o.start(t);
+          o.stop(t + d + 0.05);
+        } catch (e) {}
+      }
+      const sfx = {
+        ok: () => {
+          tn(659, 0, 0.18, "triangle");
+          tn(880, 0.1, 0.3, "triangle");
+        },
+        no: () => {
+          tn(196, 0, 0.2, "sawtooth", 0.12);
+          tn(147, 0.14, 0.3, "sawtooth", 0.12);
+        },
+        tap: () => tn(520, 0, 0.06, "sine", 0.1),
+        win: () => [523, 659, 784, 1047].forEach((f, k) => tn(f, k * 0.12, 0.45, "triangle")),
+      };
+      function frame(inner, foot) {
+        const p = Math.round((done / total) * 100);
+        $.innerHTML = `<div class="top"><div class="bar"><i style="width:${p}%"></i></div><div class="streak">🔥 ${streak}</div></div><main>${inner}</main>${foot || ""}`;
+      }
+      function next() {
+        i++;
+        render();
+      }
+      function render() {
+        const s = S[i];
+        ({ welcome, teach, mc, pairs, build, reveal, listen: listenQ, type: typeQ })[s.t](s);
+      }
+      function welcome() {
+        $.innerHTML = `<main class="hero"><div class="big" style="font-weight:800;color:var(--acc)">101</div><h1>Welcome to Gracian 101</h1><p class="mut">Enrollment is limited to one student. Sound on, please.</p></main><button class="btn" id="go">Begin</button>`;
+        go.onclick = () => {
+          sfx.tap();
+          next();
+        };
+      }
+      function teach(s) {
+        frame(
+          `<h2>${s.title}</h2>` +
+            s.w.map((x) => `<div class="row"><b>${x[0]}</b><span>${x[1]}</span></div>`).join(""),
+          `<button class="btn" id="c">Continue</button>`,
+        );
+        c.onclick = () => {
+          sfx.tap();
+          done++;
+          next();
+        };
+      }
+      function feedback(ok, msg, again, cont) {
+        ok ? sfx.ok() : sfx.no();
+        const f = document.createElement("div");
+        f.className = "fb " + (ok ? "ok" : "no");
+        f.innerHTML = `<b>${ok ? "Correct!" : "Not quite"}</b><div>${msg}</div><button class="btn">${ok ? "Continue" : "Try again"}</button>`;
+        $.querySelector(".btn").style.display = "none";
+        $.appendChild(f);
+        f.querySelector(".btn").onclick = ok ? cont : again;
+      }
+      function mc(s) {
+        let sel = -1;
+        const o = s.o.map((t, k) => [t, k]);
+        const opts = sh(o);
+        frame(
+          `<h2>${s.q}</h2>` +
+            opts.map((x) => `<button class="opt" data-k="${x[1]}">${x[0]}</button>`).join(""),
+          `<button class="btn" id="chk" disabled>Check</button>`,
+        );
+        $.querySelectorAll(".opt").forEach(
+          (b) =>
+            (b.onclick = () => {
+              sfx.tap();
+              sel = +b.dataset.k;
+              $.querySelectorAll(".opt").forEach((x) => x.classList.remove("sel"));
+              b.classList.add("sel");
+              chk.disabled = false;
+            }),
+        );
+        chk.onclick = () => {
+          const ok = sel == s.a;
+          if (ok) {
+            streak++;
+            done++;
+          } else streak = 0;
+          feedback(
+            ok,
+            ok ? "Fluent already." : "Check the lesson and try again.",
+            () => mc(s),
+            next,
+          );
+        };
+      }
+      function pairs(s) {
+        const d = {};
+        s.p.forEach((x) => {
+          d[x[0]] = x[1];
+        });
+        const L = sh(s.p.map((x) => x[0])),
+          R = sh(s.p.map((x) => x[1]));
+        let a = null;
+        const m = [];
+        const draw = () => {
+          const b = (w, k) =>
+            `<button class="opt ${m.includes(w) ? "used" : ""} ${a == w ? "sel" : ""}" data-${k}="${w}">${w}</button>`;
+          frame(
+            `<h2>Tap the matching pairs</h2><div style="display:flex;gap:10px"><div style="flex:1">${L.map((w) => b(w, "l")).join("")}</div><div style="flex:1">${R.map((w) => b(w, "r")).join("")}</div></div>`,
+            `<button class="btn" disabled>Check</button>`,
+          );
+          $.querySelectorAll("[data-l]").forEach(
+            (e) =>
+              (e.onclick = () => {
+                sfx.tap();
+                a = e.dataset.l;
+                draw();
+              }),
+          );
+          $.querySelectorAll("[data-r]").forEach(
+            (e) =>
+              (e.onclick = () => {
+                if (!a) return;
+                if (d[a] == e.dataset.r) {
+                  m.push(a, e.dataset.r);
+                  a = null;
+                  sfx.tap();
+                  if (m.length == L.length * 2) {
+                    streak++;
+                    done++;
+                    draw();
+                    feedback(true, "All matched.", null, next);
+                    return;
+                  }
+                } else {
+                  sfx.no();
+                  streak = 0;
+                  a = null;
+                }
+                draw();
+              }),
+          );
+        };
+        draw();
+      }
+      function say(w) {
+        try {
+          speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(w);
+          u.lang = "es-ES";
+          u.rate = 0.8;
+          speechSynthesis.speak(u);
+        } catch (e) {}
+      }
+      function listenQ(s) {
+        let sel = "";
+        const o = sh(s.o);
+        frame(
+          `<h2>Tap what you hear</h2><button class="btn alt" id="sp" style="width:auto;padding:16px 28px;margin:4px 0 18px">▶ Play</button>` +
+            o.map((x) => `<button class="opt" data-w="${x}">${x}</button>`).join(""),
+          `<button class="btn" id="chk" disabled>Check</button><button class="btn alt" id="sk">Can’t listen now</button>`,
+        );
+        sp.onclick = () => say(s.w);
+        setTimeout(() => say(s.w), 350);
+        $.querySelectorAll(".opt").forEach(
+          (b) =>
+            (b.onclick = () => {
+              sfx.tap();
+              sel = b.dataset.w;
+              $.querySelectorAll(".opt").forEach((x) => x.classList.remove("sel"));
+              b.classList.add("sel");
+              chk.disabled = false;
+            }),
+        );
+        sk.onclick = () => {
+          done++;
+          next();
+        };
+        chk.onclick = () => {
+          sk.style.display = "none";
+          const ok = sel == s.w;
+          if (ok) {
+            streak++;
+            done++;
+          } else streak = 0;
+          feedback(
+            ok,
+            ok ? "Good ear." : "Listen again and try once more.",
+            () => listenQ(s),
+            next,
+          );
+        };
+      }
+      function typeQ(s) {
+        frame(
+          `<h2>${s.q}</h2><input id="ti" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Type in English" style="width:100%;font:inherit;font-size:20px;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--fg)">`,
+          `<button class="btn" id="chk" disabled>Check</button>`,
+        );
+        ti.oninput = () => {
+          chk.disabled = !ti.value.trim();
+        };
+        chk.onclick = () => {
+          const ok = s.a.includes(ti.value.trim().toLowerCase());
+          if (ok) {
+            streak++;
+            done++;
+          } else streak = 0;
+          feedback(
+            ok,
+            ok ? "Nicely typed." : "Check the lesson and try again.",
+            () => typeQ(s),
+            next,
+          );
+        };
+      }
+      function build(s) {
+        const pick = [];
+        const bank = sh(s.bank);
+        const draw = () => {
+          frame(
+            `${s.title ? `<h2>${s.title}</h2>` : ""}<div class="prompt">${s.p}</div><div class="line" id="ln">${pick.map((w, k) => `<button class="chip" data-k="${k}">${(k ? w : w[0].toUpperCase() + w.slice(1)) + (k == pick.length - 1 ? s.end || "" : "")}</button>`).join("")}</div><div class="bank">${bank.map((w) => `<button class="chip ${pick.includes(w) ? "used" : ""}" data-w="${w}">${w}</button>`).join("")}</div>`,
+            `<button class="btn" id="chk" ${pick.length ? "" : "disabled"}>Check</button>`,
+          );
+          $.querySelectorAll("[data-w]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                sfx.tap();
+                pick.push(b.dataset.w);
+                draw();
+              }),
+          );
+          $.querySelectorAll("[data-k]").forEach(
+            (b) =>
+              (b.onclick = () => {
+                pick.splice(+b.dataset.k, 1);
+                draw();
+              }),
+          );
+          chk.onclick = () => {
+            const ok = pick.join(" ") == s.a.join(" ");
+            if (ok && s.final) document.body.classList.add("love");
+            if (ok) {
+              streak++;
+              done++;
+            } else streak = 0;
+            feedback(
+              ok,
+              ok ? "Nicely built." : "Rearrange the words and try again.",
+              () => {
+                pick.length = 0;
+                draw();
+              },
+              next,
+            );
+          };
+        };
+        draw();
+      }
+      function reveal() {
+        document.body.classList.add("love");
+        done = total;
+        frame(
+          `<div class="hero" style="padding-top:2vh"><h1 style="margin-top:14vh">Well?</h1></div>`,
+          `<button class="btn" id="y1">Sel</button><button class="btn alt" id="y2">Nok</button>`,
+        );
+        const yes = () => {
+          confetti();
+          frame(
+            `<div class="hero" style="padding-top:12vh"><h1>Say hi to your new boyfriend : D</h1></div>`,
+            `<button class="btn" id="nx">Continue</button>`,
+          );
+          nx.onclick = () => {
+            sfx.tap();
+            frame("");
+            $.querySelector("main").innerHTML +=
+              `<div class="cert"><div class="mut">Certificate of Completion</div><h2 style="margin:8px 0">Marje Grace B. Soriano</h2><div>has passed Gracian 101 with a perfect score and a 🔥 ${streak} streak.</div><p class="mut">Unlike a certain movie, this one is a love story.</p></div>`;
+            $.querySelectorAll(".btn").forEach((b) => (b.style.display = "none"));
+          };
+        };
+        y1.onclick = yes;
+        y2.onclick = () => {
+          sfx.tap();
+          frame(
+            `<div class="hero" style="padding-top:12vh"><h1>NT :3</h1><p class="mut">i won’t stop bothering you, though. unless you want me to : )</p></div>`,
+            `<button class="btn alt" id="bk">Go back</button>`,
+          );
+          bk.onclick = reveal;
+        };
+      }
+      function confetti() {
+        sfx.win();
+        const c = document.getElementById("cf"),
+          x = c.getContext("2d");
+        c.width = innerWidth;
+        c.height = innerHeight;
+        const cols = ["#f4a6bd", "#e8789c", "#8b5a3c", "#c98b6b", "#fbd7e2"];
+        const P = Array.from({ length: 150 }, () => ({
+          x: Math.random() * c.width,
+          y: -20 - Math.random() * c.height * 0.5,
+          v: 2 + Math.random() * 4,
+          s: 5 + Math.random() * 6,
+          c: cols[(Math.random() * 5) | 0],
+          d: Math.random() * 6,
+        }));
+        let f = 0;
+        (function a() {
+          x.clearRect(0, 0, c.width, c.height);
+          P.forEach((p) => {
+            p.y += p.v;
+            p.x += Math.sin((p.y + p.d * 50) / 30) * 2;
+            x.fillStyle = p.c;
+            x.fillRect(p.x, p.y, p.s, p.s * 0.6);
+          });
+          if (++f < 260) requestAnimationFrame(a);
+          else x.clearRect(0, 0, c.width, c.height);
+        })();
+      }
+      render();
+    </script>
+  </body>
+</html>
