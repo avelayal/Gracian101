@@ -450,9 +450,9 @@
         { t: "listen", w: "kel", o: ["kel", "lia", "sova"] },
         {
           t: "mc",
-          q: "Fill the gap: “Kel ___ lia” (boy and girl)",
+          q: "Fill the gap: “Kel ___ lia” (boy with girl)",
           o: ["dor", "ven", "nel"],
-          a: 0,
+          a: 2,
         },
         { t: "type", q: "Type the English for “Alune”", a: ["beautiful"] },
         {
@@ -795,7 +795,7 @@
             sfx.tap();
             frame("");
             $.querySelector("main").innerHTML +=
-              `<div class="cert"><div class="mut">Certificate of Completion</div><h2 style="margin:8px 0">Marje Grace B. Soriano</h2><div>has passed Gracian 101 with a perfect score and a 🔥 ${streak} streak. AMAZE AMAZE AMAZE!</div><p class="mut">Unlike a certain movie, this one is a love story.</p></div>`;
+              `<div class="cert"><div class="mut">Certificate of Completion</div><h2 style="margin:8px 0">Marje Grace B. Soriano</h2><div>has passed Gracian 101 with a perfect score and a ${streak} streak. AMAZE!</div><p class="mut">Unlike a certain movie, this one is a love story.</p></div>`;
             $.querySelectorAll(".btn").forEach((b) => (b.style.display = "none"));
           };
         };
